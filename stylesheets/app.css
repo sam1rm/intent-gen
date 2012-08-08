@@ -26,14 +26,23 @@ label {
 
 #subhead {
     margin-top:-10px;
+    margin: -10px 0 0 0;
 }
 
 #data, #mimeSubtype{
     margin-bottom: -2px;
 }
 
+div.custom.dropdown{
+    width:101% !important;
+    
+    ul{
+	width:100% !important;
+    }
+}
+
 #mimeSubtypeDropdown, #mimeSubtype {
-    margin-left:10px;
+    /margin-left:10px;
 }
 
 #invokeButton {

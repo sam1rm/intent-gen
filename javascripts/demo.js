@@ -28,20 +28,24 @@ jQuery(document).ready(function ($) {
 	$('#invokeCode').html(userCode);
     }
 
-    $('#intentDropdown').change(function() {
+    $('#intentDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("intentDropdown");
-	intentType = getElem.options[getElem.selectedIndex].text.toLowerCase();
-	document.getElementById("shareBtn").innerHTML=firstUpperCase(intentType);
-	update();
+	intentType = $(this).text().toLowerCase();
+	if (!(intentType == "choose an intent")) {
+	    document.getElementById("shareBtn").innerHTML=firstUpperCase(intentType);
+	    update();
+	}
     });
     
-    $('#mimeDropdown').change(function() {
+    $('#mimeDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("mimeDropdown");
-	mimeType = getElem.options[getElem.selectedIndex].text.toLowerCase();
-	$("#mimeSubtypeDropdown").autocomplete({
-	    source: determineAutocomplete()
-	});
-	update();
+	mimeType = $(this).text().toLowerCase();
+	if (!(mimeType == "choose a mime type")) {
+	    $("#mimeSubtypeDropdown").autocomplete({
+		source: determineAutocomplete()
+	    });
+	    update();
+	}
     });
 
     $('#mimeSubtypeDropdown').keyup(function() {
@@ -223,7 +227,7 @@ jQuery(document).ready(function ($) {
 	return ('var intent = new Intent("http://webintents.org/' + intent + ", <br/>"
 		+ "   " + '"' + mime + '/' + subtype + '", <br/>'
 		+ "   " + '"' + data + '");<br/>'
-		+ "window.navigator.startActivity(intent);</br>"
+		+ "window.navigator.startActivity(intent);<br/"
 	       );
     };
     
