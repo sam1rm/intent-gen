@@ -1,33 +1,18 @@
 jQuery(document).ready(function ($) {
     var getElem, intentType, mimeType, mimeSubtype, dataType, userCode;
-    intentType = "edit";
-    mimeType = "application";
+    intentType = "share";
     dataType = "http://news.bbc.co.uk";
     $('.slide-out-div').removeAttr("style");
-    mimeType = "application";
-    mimeSubtype = "*";
-    $("#invokeButton").click(function() {
-	getElem = document.getElementById("intentDropdown");
-	intentType = getElem.options[getElem.selectedIndex].text.toLowerCase();
-	getElem = document.getElementById("mimeSubtypeDropdown").value.toLowerCase();
-	mimeSubtype = getElem;
-	getElem = document.getElementById("mimeDropdown");
-	mimeType = getElem.options[getElem.selectedIndex].text.toLowerCase();
-	getElem = document.getElementById("dataDropdown").value.toLowerCase();
-	dataType = getElem;
-	userCode = generateInvokeIntentCode(intentType, mimeType, mimeSubtype, dataType);
-	document.getElementById("userInvokedCode").innerHTML=userCode;
-;    	document.getElementById("codeSample").innerHTML="Your code:";
-	document.getElementById("shareBtn").innerHTML=firstUpperCase(intentType);
-	document.getElementById("invokeCode").innerHTML=userCode;
-    });
+    mimeType = "text";
+    mimeSubtype = "uri-list";
     
+    /** Javascript Callback function for each time one of the input fields are changed. */
     var update = function() {
 	userCode = generateInvokeIntentCode(intentType, mimeType, mimeSubtype, dataType);
 	$('#userInvokedCode').html(userCode);
 	$('#invokeCode').html(userCode);
     }
-
+    
     $('#intentDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("intentDropdown");
 	intentType = $(this).text().toLowerCase();
@@ -39,8 +24,9 @@ jQuery(document).ready(function ($) {
     
     $('#mimeDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("mimeDropdown");
-	mimeType = $(this).text().toLowerCase();
-	if (!(mimeType == "choose a mime type")) {
+	var temp = $(this).text().toLowerCase();
+	if (!(temp == "choose a mime type")) {
+	    mimeType = temp;
 	    $("#mimeSubtypeDropdown").autocomplete({
 		source: determineAutocomplete()
 	    });
@@ -48,6 +34,8 @@ jQuery(document).ready(function ($) {
 	}
     });
 
+
+    /** For the MIME Subtype input field, this function updates the Sample Code for each letter typed. */
     $('#mimeSubtypeDropdown').keyup(function() {
 	mimeSubtype = document.getElementById("mimeSubtypeDropdown").value.toLowerCase();
 	update();
@@ -62,6 +50,7 @@ jQuery(document).ready(function ($) {
 	window.navigator.webkitStartActivity(intent);
     });
     
+    /** List of all most commonly used subtypes for the Application MIMEtype. */
     var applicationSubtype = [
 	"atom+xml",
 	"ecmascript",
@@ -84,6 +73,7 @@ jQuery(document).ready(function ($) {
 	"x-gzip"
     ];
     
+    /** List of all most commonly used subtypes for the Audio MIMEtype. */
     var audioSubtype = [
 	"basic",
 	"L24",
@@ -98,10 +88,13 @@ jQuery(document).ready(function ($) {
 	"webm",
     ];
 
+    /** List of all most commonly used subtypes for the example MIMEtype. 
+     *  NOTE: This should be eventually removed. */
     var exampleSubtype = [
 	"all"
     ];
     
+    /** List of all most commonly used subtypes for the Image MIMEtype. */
     var imageSubtype = [
 	"gif",
 	"jpeg",
@@ -112,6 +105,7 @@ jQuery(document).ready(function ($) {
 	"vnd.microsoft.icon"
     ];
     
+    /** List of all most commonly used subtypes for the Message MIMEtype. */
     var messageSubtype = [
 	"http",
 	"imdn+xml",
@@ -119,6 +113,7 @@ jQuery(document).ready(function ($) {
 	"rfc822"
     ];
     
+    /** List of all most commonly used subtypes for the Model MIMEtype. */
     var modelSubtype = [
 	"example",
 	"iges",
@@ -129,6 +124,7 @@ jQuery(document).ready(function ($) {
 	"x3d+xml"
     ];
 
+    /** List of all most commonly used subtypes for the Multipart MIMEtype. */
     var multipartSubtype = [
 	"mixed",
 	"alternative",
@@ -138,6 +134,7 @@ jQuery(document).ready(function ($) {
 	"encrpyted"
     ];
     
+    /** List of all most commonly used subtypes for the Text MIMEtype. */
     var textSubtype = [
 	"cmd",
 	"css",
@@ -149,6 +146,8 @@ jQuery(document).ready(function ($) {
 	"xml"
     ];
     
+
+    /** List of all most commonly used subtypes for the Video MIMEtype. */
     var videoSubtype = [
 	"mpeg",
 	"mp4",
@@ -160,32 +159,9 @@ jQuery(document).ready(function ($) {
 	"x-flv"
     ];
 
-    var availableTags = [
-	"ActionScript",
-	"AppleScript",
-	"Asp",
-	"BASIC",
-	"C",
-	"C++",
-	"Clojure",
-	"COBOL",
-	"ColdFusion",
-	"Erlang",
-	"Fortran",
-	"Groovy",
-	"Haskell",
-	"Java",
-	"JavaScript",
-	"Lisp",
-	"Perl",
-	"PHP",
-	"Python",
-	"Ruby",
-	"Scala",
-	"Scheme"
-    ];
     
-
+    /** Determines which Array to Autocomplete the dropdown suggestions based on what the
+     *  current mimeType value function is. */
     var determineAutocomplete = function() {
 	switch(mimeType)
 	{
@@ -231,6 +207,7 @@ jQuery(document).ready(function ($) {
 	       );
     };
     
+    /** This was initially part of the feedback tab. I took it out because it wasn't all-browser friendly. */
     $('.slide-out-div').tabSlideOut({
             tabHandle: '.handle',                     
             pathToTabImage: 'images/feedback.png', 
