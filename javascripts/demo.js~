@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
     dataType = "http://news.bbc.co.uk";
     $('.slide-out-div').removeAttr("style");
     mimeType = "text";
-    mimeSubtype = "*";
+    mimeSubtype = "uri-list";
     
     /** Javascript Callback function for each time one of the input fields are changed. */
     var update = function() {
@@ -15,13 +15,12 @@ jQuery(document).ready(function ($) {
     
     $('#intentDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("intentDropdown");
-	var temp = $(this).text().toLowerCase();
-	if (!(temp == "choose an intent")) {
-	    intentType = temp;
+	intentType = $(this).text().toLowerCase();
+	if (!(intentType == "choose an intent")) {
 	    document.getElementById("shareBtn").innerHTML=firstUpperCase(intentType);
 	    update();
 	}
-     });
+    });
     
     $('#mimeDropdownlist').on('click', 'li', function() {
 	getElem = document.getElementById("mimeDropdown");
